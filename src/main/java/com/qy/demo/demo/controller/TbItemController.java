@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.qy.demo.demo.entity.Bserrr;
 import com.qy.demo.demo.entity.TbItem;
 
+import com.qy.demo.demo.exception.ResponseResult;
+import com.qy.demo.demo.exception.ResultEnum;
 import com.qy.demo.demo.mapper.TbItemMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -74,7 +76,7 @@ public class TbItemController {
 
     }
 
-    @Valid
+
     @GetMapping(value = "/findTest2")
     public TbItem find2(@RequestBody @Valid TbItem tbItem
     ) {
@@ -85,33 +87,35 @@ public class TbItemController {
         return tbItem;
 
     }
-
-    @PostMapping(value = "/findTest3",produces = "application/json;charset=UTF-8")
-    public Map<Object, Object>  vali(@Validated TbItem bserrr, BindingResult bindingResult){
-
-        System.out.println(1111111);
-
-        Map<Object, Object> res = new HashMap<>();
+    @GetMapping(value = "/findTest22")
+    //    public Map<Object, Object> vali(@Valid  @RequestBody  Bserrr bserrr){
+    public String find223(@RequestBody @Valid TbItem tbItem , BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return bindingResult.getFieldError().getDefaultMessage();
+        }
+     /*
+       Map<Object, Object> res = new HashMap<>();
         if (bindingResult.hasErrors()) {
             res.put("status", 400);
             res.put("msg", bindingResult.getFieldError().getDefaultMessage());
-            return res;
+            System.out.println(bindingResult.getFieldError().getDefaultMessage());
+            //return res;
         } else {
             res.put("status", 200);
             res.put("msg", "ok");
             res.put("data", bindingResult.hasErrors());
-            return res;
-        }
-
-
-    }
-  /*  public String find2(@RequestBody @Valid TbItem tbItem , BindingResult bindingResult) {
-        if(bindingResult.hasErrors()){
-            return bindingResult.getFieldError().getDefaultMessage();
-        }
+          //  return res;
+        }*/
         return "222";
     }
-*/
+
+
+    @PostMapping(value = "/findTest3")
+    public ResponseResult vali(@Valid @RequestBody Bserrr bserrr){
+        System.out.println(bserrr.getName());
+        return new ResponseResult(ResultEnum.SUCCESS);
+    }
+
 
 
 }

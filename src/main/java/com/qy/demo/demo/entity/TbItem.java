@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
@@ -29,53 +30,43 @@ public class TbItem {
     /**
      * 商品标题
      */
-    @NotNull(message = "姓名不能为null")
+    @NotBlank(message = "姓名不能为null")
     private String title;
 
     /**
      * 商品卖点
      */
     private String sellPoint;
-
     /**
      * 商品价格，单位为：分
      */
     private Long price;
-
     /**
      * 库存数量
      */
     private Integer num;
-
     /**
      * 商品条形码
      */
     private String barcode;
-
     /**
      * 商品图片
      */
     private String image;
-
     /**
      * 所属类目，叶子类目
      */
     private Long cid;
-
     /**
      * 商品状态，1-正常，2-下架，3-删除
      */
     private Integer status;
-
     /**
      * 创建时间
      */
     private LocalDateTime created;
-
     /**
      * 更新时间
      */
     private LocalDateTime updated;
-
-
 }
