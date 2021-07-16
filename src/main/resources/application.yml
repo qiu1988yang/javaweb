@@ -1,5 +1,5 @@
 server:
-  port: 8088
+  port: 8089
 
 spring:
   datasource:
@@ -8,7 +8,7 @@ spring:
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
 
-mybatis:
+mybatis-plus:
   #当mybatis的xml文件和mapper接口不在相同包下时
   #需要用mapperLocations属性指定xml文件的路径。
   #*是个通配符，代表所有的文件，**代表所有目录下
@@ -27,7 +27,7 @@ mapper:
   safe-delete: true   # 删除时必须设置查询条件
   safe-update: true   # 更新时必须设置查询条件
   use-java-type: true   # 是否映射Java基本数据类型
-  mappers: com.qy.demo.demo.Mapper
+ # mappers: com.qy.demo.demo.Mapper
 
 #pagehelper分页插件
 pagehelper:
