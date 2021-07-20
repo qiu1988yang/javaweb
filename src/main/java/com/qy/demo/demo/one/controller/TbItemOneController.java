@@ -11,7 +11,9 @@ import com.qy.demo.demo.one.entity.TbItemOne;
 import com.qy.demo.demo.one.mapper.TbItemOneMapper;
 import com.qy.demo.demo.one.service.ITbItemOneService;
 import com.qy.demo.demo.one.utils.Result;
+import com.qy.demo.demo.one.utils.ResultEnum;
 import com.qy.demo.demo.one.utils.ResultUtil;
+import com.qy.demo.demo.one.utils.TbTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -125,17 +127,17 @@ public class TbItemOneController {
     @GetMapping(value = "/get")
     public Result get() {
         TbItemOne itemOne = itemOneService.getById(9);
-// 根据 Wrapper，查询一条记录。结果集，如果是多个会抛出异常，随机取一条加上限制条件 wrapper.last("LIMIT 1")
-//implements Serializable
+        // 根据 Wrapper，查询一条记录。结果集，如果是多个会抛出异常，随机取一条加上限制条件 wrapper.last("LIMIT 1")
+        //implements Serializable
 
         itemOneService.getOne(Wrappers.<TbItemOne>query().lambda().eq(TbItemOne::getId, 3));
-// 根据 Wrapper，查询一条记录
+        // 根据 Wrapper，查询一条记录
         itemOneService.getOne(Wrappers.<TbItemOne>query().lambda().eq(TbItemOne::getId, 3));
-// 根据 Wrapper，查询一条记录
+        // 根据 Wrapper，查询一条记录
         Map<String, Object> columnMap = new HashMap<>();
         columnMap = itemOneService.getMap(Wrappers.<TbItemOne>query().lambda().eq(TbItemOne::getId, 9));
-// 根据 Wrapper，查询一条记录
-//<V> V getObj(Wrapper<T> queryWrapper, Function<? super Object, V> mapper);
+        // 根据 Wrapper，查询一条记录
+        //<V> V getObj(Wrapper<T> queryWrapper, Function<? super Object, V> mapper);
         return ResultUtil.success(columnMap);
 
 
@@ -239,10 +241,10 @@ public class TbItemOneController {
     public void update2() {
 
         UpdateWrapper<TbItemOne> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.in("age",Arrays.asList(20,30,40));
-        updateWrapper.set("name","jack");
-        updateWrapper.set("age",43);
-        updateWrapper.set("email","sakara@qq.top");
+        updateWrapper.in("age", Arrays.asList(20, 30, 40));
+        updateWrapper.set("name", "jack");
+        updateWrapper.set("age", 43);
+        updateWrapper.set("email", "sakara@qq.top");
         itemOneService.update(updateWrapper);
 
         TbItemOne tbItemOne = new TbItemOne();
@@ -254,32 +256,68 @@ public class TbItemOneController {
 
     }
 
+    //分页
     @GetMapping(value = "/delete")
     public Result delete() {
+        List<TbItemOne> list = itemOneService.list();
+        TbTest test = new TbTest();
+        test.setData(list);
 
-    //    <V> List<V> listObjs(Function<? super Object, V> mapper);
 
 
+
+
+        Page<TbItemOne> page = new Page<> (1,2);
+        Map<String, Object> columnMap = new HashMap<>();
+        columnMap.put("cid", "111");
+
+        LambdaQueryWrapper<TbItemOne> userLambdaQueryWrapper = Wrappers.lambdaQuery();
+        //userLambdaQueryWrapper.like(TbItemOne::getTitle, "111");
+        List<String> typeList = new ArrayList<>();
+        typeList.add("1111");
+
+        System.out.println(typeList);
+
+        userLambdaQueryWrapper.in(TbItemOne::getTitle, typeList);
+      //  void pageMaps(Page<TbItemOne> page);
+        IPage<TbItemOne> tbItemOne =   itemOneService.page(page,userLambdaQueryWrapper);
+
+
+      //  IPage<TbItemOne> tbItemOne =   itemOneService.pageMaps(page,userLambdaQueryWrapper);
+
+
+
+//   IPage<Map<String, Object>> userIPage2 =
 
 
         // 根据 entity 条件，删除记录
-      //  int delete(@Param(Constants.WRAPPER) Wrapper<T> wrapper);
+        //  int delete(@Param(Constants.WRAPPER) Wrapper<T> wrapper);
         // 删除（根据ID 批量删除）
-       // int deleteBatchIds(@Param(Constants.COLLECTION) Collection<? extends Serializable> idList);
+        // int deleteBatchIds(@Param(Constants.COLLECTION) Collection<? extends Serializable> idList);
         // 根据 ID 删除
-       /// int deleteById(Serializable id);
+        /// int deleteById(Serializable id);
         // 根据 columnMap 条件，删除记录
-      //  int deleteByMap(@Param(Constants.COLUMN_MAP) Map<String, Object> columnMap);
+        //  int deleteByMap(@Param(Constants.COLUMN_MAP) Map<String, Object> columnMap);
+      /*  @Select({
+                "select user_id, user_name, age, address " +
+                        "from student" +
+                        "where user_id = #{userQueryVI.userId} " +
+                        "order by create_time desc"
+        })
+        List<StudentVO> selectStudentListBySelective(Page<StudentVO> page, @Param("studentQueryVI") StudentQueryVI studentQueryVI);*/
 
-        return ResultUtil.success(itemOneMapper.getByProdId(2));
+
+
+        return ResultUtil.success(tbItemOne);
     }
 
+    @GetMapping(value = "/mapper")
+    public Result itemOneMapper() {
+        TbItemOne itemOne =  itemOneMapper.getByBizUserId(2);
 
 
-    public void testSelectBatchIds(){
-
-
-
+        String  itemOne22= itemOneMapper.getUserIdByUnionId(2);
+        return ResultUtil.success(itemOne);
     }
 
 }

@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qy.demo.demo.one.mapper.TbItemOneMapper">
+    <resultMap id="BaseResultMap" type="com.qy.demo.demo.one.entity.TbItemOne">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="num" jdbcType="TINYINT" property="num"/>
+    </resultMap>
 
+    <select id="getByBizUserId" resultType="com.qy.demo.demo.one.entity.TbItemOne">
+        select * from tb_item_one where id = #{bizUserId}
+    </select>
+
+    <select id="getUserIdByUnionId" resultType="java.lang.String">
+      SELECT id from tb_item_one where id = #{bizUserId} limit 1
+    </select>
 </mapper>

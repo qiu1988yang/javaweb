@@ -28,7 +28,7 @@ public class TbItemOne {
      * IdType.AUTO 定义类型错误
      */
     @TableId(type = IdType.AUTO)
-    private int id;
+    private Integer id;
 
     /**
      * 商品标题

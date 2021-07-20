@@ -18,13 +18,17 @@ mybatis-plus:
   #当mybatis的xml文件和mapper接口不在相同包下时
   #需要用mapperLocations属性指定xml文件的路径。
   #*是个通配符，代表所有的文件，**代表所有目录下
-  mapper-locations: classpath*:/com/cloudtech/mapper/*.xml
+  mapper-locations: classpath:mapper/one/*.xml
+
   #指定bean所在包
   #在mapper.xml中可以使用别名而不使用类的全路径名
   type-aliases-package: com.qy.demo.demo.bean
 
   global-config:
     d-type: 0
+  #查看plus日志
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 #通用mapper配置
 mapper:

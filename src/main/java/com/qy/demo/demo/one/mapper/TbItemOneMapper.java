@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 /**
  * <p>
  * 商品表 Mapper 接口
@@ -22,5 +24,11 @@ public interface TbItemOneMapper extends BaseMapper<TbItemOne> {
 
     @Delete("DELETE FROM tb_item_one WHERE id = #{id}")
     void delRelationByProdId(@Param("id") Integer prodId);
+
+
+    TbItemOne getByBizUserId(@Param("bizUserId") Integer bizUserId);
+
+
+    String getUserIdByUnionId(@Param("bizUserId") Integer bizUserId);
 
 }
