@@ -15,6 +15,8 @@ import com.qy.demo.demo.one.utils.ResultEnum;
 import com.qy.demo.demo.one.utils.ResultUtil;
 import com.qy.demo.demo.one.utils.TbTest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -264,10 +266,7 @@ public class TbItemOneController {
         test.setData(list);
 
 
-
-
-
-        Page<TbItemOne> page = new Page<> (1,2);
+        Page<TbItemOne> page = new Page<>(1, 2);
         Map<String, Object> columnMap = new HashMap<>();
         columnMap.put("cid", "111");
 
@@ -279,12 +278,11 @@ public class TbItemOneController {
         System.out.println(typeList);
 
         userLambdaQueryWrapper.in(TbItemOne::getTitle, typeList);
-      //  void pageMaps(Page<TbItemOne> page);
-        IPage<TbItemOne> tbItemOne =   itemOneService.page(page,userLambdaQueryWrapper);
+        //  void pageMaps(Page<TbItemOne> page);
+        IPage<TbItemOne> tbItemOne = itemOneService.page(page, userLambdaQueryWrapper);
 
 
-      //  IPage<TbItemOne> tbItemOne =   itemOneService.pageMaps(page,userLambdaQueryWrapper);
-
+        //  IPage<TbItemOne> tbItemOne =   itemOneService.pageMaps(page,userLambdaQueryWrapper);
 
 
 //   IPage<Map<String, Object>> userIPage2 =
@@ -307,15 +305,24 @@ public class TbItemOneController {
         List<StudentVO> selectStudentListBySelective(Page<StudentVO> page, @Param("studentQueryVI") StudentQueryVI studentQueryVI);*/
 
 
-
         return ResultUtil.success(tbItemOne);
     }
 
     @GetMapping(value = "/mapper")
     public Result itemOneMapper() {
-        TbItemOne itemOne =  itemOneMapper.getByBizUserId(2);
-        String  itemOne22= itemOneMapper.getUserIdByUnionId(2);
+        TbItemOne itemOne = itemOneMapper.getByBizUserId(2);
+        String itemOne22 = itemOneMapper.getUserIdByUnionId(2);
         return ResultUtil.success(itemOne);
     }
 
+    @GetMapping(value = "/mapper2")
+    public ResponseEntity<String> itemOneMapper222() {
+        TbItemOne itemOne = itemOneMapper.getByBizUserId(2);
+        String itemOne22 = itemOneMapper.getUserIdByUnionId(2);
+         //return new ResponseEntity<>("Your age is " + itemOne22,HttpStatus.OK);
+
+        return ResponseEntity.ok().build();
+    }
 }
+
+
