@@ -1,0 +1,55 @@
+server:
+  port: 8089
+
+spring:
+  jackson:
+    date-format: yyyy-MM-dd hh:mm:ss #如果使用字符串表示，用这行设置格式
+    timezone: GMT+8
+    serialization:
+      write-dates-as-timestamps: false #使用时间戳，使用数值timestamp表示日期
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/qiuyangtest?serverTimezone=Asia/Shanghai&characterEncoding=utf-8
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+mybatis-plus:
+  #当mybatis的xml文件和mapper接口不在相同包下时
+  #需要用mapperLocations属性指定xml文件的路径。
+  #*是个通配符，代表所有的文件，**代表所有目录下
+  mapper-locations: classpath:mapper/*/*.xml
+
+  #指定bean所在包
+  #在mapper.xml中可以使用别名而不使用类的全路径名
+  type-aliases-package: com.qy.demo.demo.bean
+
+  global-config:
+    d-type: 0
+  #查看plus日志
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+#通用mapper配置
+mapper:
+  identity: MYSQL   # 取主键的方式
+  before: false      # 主键递增
+  not-empty: true   # 按主键插入或更新时，是否判断字符串 != ''
+  style: camelhumpandlowercase  # 实体类与表中字段的映射方式：驼峰转带下划线的小写格式
+  wrap-keyword: '{0}'   # 自动配置关键字，配置后不需要使用 @Column 指定别名
+  safe-delete: true   # 删除时必须设置查询条件
+  safe-update: true   # 更新时必须设置查询条件
+  use-java-type: true   # 是否映射Java基本数据类型
+ # mappers: com.qy.demo.demo.Mapper
+
+#pagehelper分页插件
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+#显示sql日志
+logging:
+  level:
+    com.qy.demo.demo.mapper: debug
