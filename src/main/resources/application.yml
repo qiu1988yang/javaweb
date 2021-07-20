@@ -2,6 +2,12 @@ server:
   port: 8089
 
 spring:
+  jackson:
+    date-format: yyyy-MM-dd hh:mm:ss #如果使用字符串表示，用这行设置格式
+    timezone: GMT+8
+    serialization:
+      write-dates-as-timestamps: false #使用时间戳，使用数值timestamp表示日期
+
   datasource:
     url: jdbc:mysql://localhost:3306/qiuyangtest?serverTimezone=Asia/Shanghai&characterEncoding=utf-8
     username: root
@@ -16,6 +22,9 @@ mybatis-plus:
   #指定bean所在包
   #在mapper.xml中可以使用别名而不使用类的全路径名
   type-aliases-package: com.qy.demo.demo.bean
+
+  global-config:
+    d-type: 0
 
 #通用mapper配置
 mapper:

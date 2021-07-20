@@ -1,12 +1,14 @@
 package com.qy.demo.demo.controller;
 
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.qy.demo.demo.entity.Bserrr;
 import com.qy.demo.demo.entity.TbItem;
 
 import com.qy.demo.demo.exception.ResponseResult;
 import com.qy.demo.demo.exception.ResultEnum;
+import com.qy.demo.demo.mapper.DepartMapper;
 import com.qy.demo.demo.mapper.TbItemMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -36,6 +38,10 @@ public class TbItemController {
 
     @Resource
     private TbItemMapper tbItemMapper;
+
+
+
+
 
     @PostMapping(value = "/add")
     public void selectAll() {
@@ -67,7 +73,7 @@ public class TbItemController {
 
 
     @GetMapping(value = "/findTest")
-    public void find(@RequestParam String myName) {
+    public void find(@RequestParam(name = "myName", defaultValue = "")  String myName) {
 
 
         System.out.println(myName);
@@ -78,13 +84,12 @@ public class TbItemController {
 
 
     @GetMapping(value = "/findTest2")
-    public TbItem find2(@RequestBody @Valid TbItem tbItem
-    ) {
+    public Bserrr find2(@RequestBody @Valid Bserrr bserrr) {
 
        // getMessage();
         System.out.println(22222);
 
-        return tbItem;
+        return bserrr;
 
     }
     @GetMapping(value = "/findTest22")
@@ -110,10 +115,22 @@ public class TbItemController {
     }
 
 
-    @PostMapping(value = "/findTest3")
-    public ResponseResult vali(@Valid @RequestBody Bserrr bserrr){
+  //  @GetMapping(value = "/findTest3",produces = "application/json")
+    @RequestMapping( value="/findTest3",method =RequestMethod.GET,produces="application/json")
+    public ResponseResult vali(@RequestBody Bserrr bserrr){
         System.out.println(bserrr.getName());
         return new ResponseResult(ResultEnum.SUCCESS);
+    }
+
+
+    @GetMapping(value = "/qy1" ,produces="application/json")
+    public TbItem find11(@Valid @RequestBody TbItem item){
+        item =  tbItemMapper.getByItemId(1);
+        int aaa =  tbItemMapper.countItem("outerProdId");
+        List<TbItem> list = tbItemMapper.listNormalProd(1,1);
+       // TbItem getByItemId
+        return item;
+        
     }
 
 
