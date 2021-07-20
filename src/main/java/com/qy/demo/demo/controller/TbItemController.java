@@ -74,12 +74,8 @@ public class TbItemController {
 
     @GetMapping(value = "/findTest")
     public void find(@RequestParam(name = "myName", defaultValue = "")  String myName) {
-
-
         System.out.println(myName);
         System.out.println(22222);
-
-
     }
 
 

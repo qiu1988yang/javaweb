@@ -314,8 +314,6 @@ public class TbItemOneController {
     @GetMapping(value = "/mapper")
     public Result itemOneMapper() {
         TbItemOne itemOne =  itemOneMapper.getByBizUserId(2);
-
-
         String  itemOne22= itemOneMapper.getUserIdByUnionId(2);
         return ResultUtil.success(itemOne);
     }
