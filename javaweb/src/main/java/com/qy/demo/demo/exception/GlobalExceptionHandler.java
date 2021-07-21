@@ -39,14 +39,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = NullPointerException.class)
     @ResponseBody
     public Result exceptionHandler(HttpServletRequest req, NullPointerException e) {
-        logger.error("发生空指针异常！原因是:", e.getMessage());
+        logger.error("发生空指针异常！原因是11:", e.getMessage());
         return ResultUtil.error(200, e.getMessage());
     }
 
     @ExceptionHandler(value = HttpMessageNotReadableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Result HttpMessageNotReadableException(HttpMessageNotReadableException e) {
-        logger.error("发生空指针异常！原因是:", e.getMessage());
+        logger.error("发生空指针异常！原因是22:", e.getMessage());
         return ResultUtil.error(200, e.getMessage());
     }
 

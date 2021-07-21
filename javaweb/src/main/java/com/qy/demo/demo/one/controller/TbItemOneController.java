@@ -318,7 +318,6 @@ public class TbItemOneController {
         TbItemOne itemOne = itemOneMapper.getByBizUserId(2);
         String itemOne22 = itemOneMapper.getUserIdByUnionId(2);
          //return new ResponseEntity<>("Your age is " + itemOne22,HttpStatus.OK);
-
         return ResponseEntity.ok().build();
     }
 }
