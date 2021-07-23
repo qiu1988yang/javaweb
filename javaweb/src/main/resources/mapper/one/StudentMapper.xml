@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qy.demo.demo.one.mapper.StudentMapper">
+    <select id="getByBizUserId2" resultType="com.qy.demo.demo.one.entity.Student">
+        select * from student where id = #{bizUserId}
+    </select>
+
+    <select id="getUserIdByUnionId2" resultType="java.lang.String">
+      SELECT id from student where id = #{bizUserId} limit 1
+    </select>
+
+
+    <select id="selectCardById" parameterType="int" resultType="com.qy.demo.demo.one.entity.Student">
+        SELECT * FROM student WHERE id = #{id}
+    </select>
+
+
+    <select id="selectPersonById" parameterType="int" resultMap="personMap">
+        SELECT * FROM student WHERE id = #{id}
+    </select>
+
+    <resultMap type="com.qy.demo.demo.one.entity.Student" id="personMap">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <!--  一对一关联映射：association      -->
+        <association property="studentClass" column="ClassId"
+                     select="com.qy.demo.demo.one.mapper.StudentClassMapper.selectCardById"
+                     javaType="com.qy.demo.demo.one.entity.StudentClass"/>
+    </resultMap>
+
+
+
+    <select id="selectPersonById2" parameterType="int" resultMap="personMap2">
+        SELECT * FROM student WHERE id = #{id}
+    </select>
+    <resultMap type="com.qy.demo.demo.one.entity.Student" id="personMap2">
+        <id property="id" column="ClassId"/>
+        <result property="name" column="name"/>
+        <!--  一对一关联映射：association      -->
+        <association property="studentClass"
+                     select="com.qy.demo.demo.one.mapper.StudentClassMapper.selectCardById"
+                     column="ClassId" > <!--column="ClassId"主表得id-->
+        </association>
+
+    </resultMap>
+
+
+
+
+    <resultMap type="com.qy.demo.demo.one.entity.Student" id="personMap3">
+        <id property="id" column="ClassId"/>
+        <result property="name" column="name"/>
+        <collection property="studentClassList"
+                    select="com.qy.demo.demo.one.mapper.StudentClassMapper.selectCardById"
+                    ofType="com.qy.demo.demo.one.entity.StudentClass"
+                    javaType="ArrayList"
+                    column="ClassId">
+        </collection>
+
+        <collection property="studentClassList2"
+                    select="com.qy.demo.demo.one.mapper.StudentClassMapper.selectCardById"
+                    ofType="com.qy.demo.demo.one.entity.StudentClass"
+                    javaType="ArrayList"
+                    column="ClassId">
+        </collection>
+
+
+
+    </resultMap>
+
+    <select id="selectPersonById3" parameterType="int" resultMap="personMap3">
+        SELECT * FROM student WHERE id = #{id}
+    </select>
+
+
+
+
+
+</mapper>

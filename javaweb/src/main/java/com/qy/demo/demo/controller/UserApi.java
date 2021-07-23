@@ -5,10 +5,15 @@ import com.qy.demo.demo.bean.User;
 import com.qy.demo.demo.jwt.BaseUserInfo;
 import com.qy.demo.demo.jwt.TokenService;
 import com.qy.demo.demo.jwt.UserLoginToken;
+import com.qy.demo.demo.one.utils.Result;
+import com.qy.demo.demo.one.utils.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("api")
@@ -17,6 +22,9 @@ public class UserApi {
       UserService userService;*/
     @Resource
     TokenService tokenService;
+    @Autowired
+    RedisTemplate redisTemplate;
+
 
     //登录
     @PostMapping("/login")
@@ -43,9 +51,29 @@ public class UserApi {
         }
     }
 
-    @UserLoginToken
     @GetMapping("/getMessage")
     public String getMessage() {
+
+
+        String allKey = "allUser";
+       // List<User> lists = (List<User>) redisTemplate.boundValueOps(allKey).get();
+/*        List<User> lists =  new ArrayList<>();
+        User u = new User();
+        u.setId("222");
+        lists.add(u);
+        if(lists != null){
+            System.out.println("inner redis success!!");
+        }*/
+        redisTemplate.boundValueOps(allKey).set("222");
+
+
         return BaseUserInfo.get("id");
+    }
+
+    @GetMapping("/getMessage2")
+    public Result getMessage2() {
+        String allKey = "allUser";
+        //List<User> lists = (List<User>) redisTemplate.boundValueOps(allKey).get();
+        return ResultUtil.success(redisTemplate.boundValueOps(allKey).get());
     }
 }
