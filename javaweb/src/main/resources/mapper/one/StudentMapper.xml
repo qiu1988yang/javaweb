@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qy.demo.demo.one.mapper.StudentMapper">
+
     <select id="getByBizUserId2" resultType="com.qy.demo.demo.one.entity.Student">
         select * from student where id = #{bizUserId}
     </select>
@@ -9,25 +10,13 @@
       SELECT id from student where id = #{bizUserId} limit 1
     </select>
 
-
     <select id="selectCardById" parameterType="int" resultType="com.qy.demo.demo.one.entity.Student">
         SELECT * FROM student WHERE id = #{id}
     </select>
 
-
-    <select id="selectPersonById" parameterType="int" resultMap="personMap">
+  <!--  <select id="selectPersonById" parameterType="int" resultMap="personMap">
         SELECT * FROM student WHERE id = #{id}
-    </select>
-
-    <resultMap type="com.qy.demo.demo.one.entity.Student" id="personMap">
-        <id property="id" column="id"/>
-        <result property="name" column="name"/>
-        <!--  一对一关联映射：association      -->
-        <association property="studentClass" column="ClassId"
-                     select="com.qy.demo.demo.one.mapper.StudentClassMapper.selectCardById"
-                     javaType="com.qy.demo.demo.one.entity.StudentClass"/>
-    </resultMap>
-
+    </select>-->
 
 
     <select id="selectPersonById2" parameterType="int" resultMap="personMap2">
@@ -36,16 +25,13 @@
     <resultMap type="com.qy.demo.demo.one.entity.Student" id="personMap2">
         <id property="id" column="ClassId"/>
         <result property="name" column="name"/>
-        <!--  一对一关联映射：association      -->
-        <association property="studentClass"
-                     select="com.qy.demo.demo.one.mapper.StudentClassMapper.selectCardById"
-                     column="ClassId" > <!--column="ClassId"主表得id-->
-        </association>
+        <!--   &lt;!&ndash;  一对一关联映射：association      &ndash;&gt;-->
+        <!--   <association property="studentClass"
+                        select="com.qy.demo.demo.one.mapper.StudentClassMapper.selectCardById"
+                        column="ClassId" > &lt;!&ndash;column="ClassId"主表得id&ndash;&gt;
+           </association>-->
 
     </resultMap>
-
-
-
 
     <resultMap type="com.qy.demo.demo.one.entity.Student" id="personMap3">
         <id property="id" column="ClassId"/>
@@ -63,9 +49,6 @@
                     javaType="ArrayList"
                     column="ClassId">
         </collection>
-
-
-
     </resultMap>
 
     <select id="selectPersonById3" parameterType="int" resultMap="personMap3">
@@ -73,7 +56,148 @@
     </select>
 
 
+    <select id="selectPersonById4" parameterType="int" resultMap="personMap4">
+        SELECT * FROM student WHERE id = #{id}
+    </select>
+    <resultMap type="com.qy.demo.demo.one.entity.Student" id="personMap4">
+        <id property="id" column="ClassId"/>
+        <result property="name" column="name"/>
+        <collection property="studentClassList"
+                    select="com.qy.demo.demo.one.mapper.StudentClassMapper.selectCardById"
+                    ofType="com.qy.demo.demo.one.entity.StudentClass"
+                    javaType="ArrayList"
+                    column="ClassId">
+        </collection>
+        <collection property="studentClass"
+                    select="com.qy.demo.demo.one.mapper.StudentClassMapper.selectCardById"
+                    ofType="com.qy.demo.demo.one.entity.StudentClass"
+                    javaType="com.qy.demo.demo.one.entity.StudentClass"
+                    column="ClassId"
+        >
+        </collection>
+    </resultMap>
 
+
+
+
+
+
+    <resultMap type="com.qy.demo.demo.one.entity.Order" id="orderUserResultMap">
+        <id property="id" column="id" />
+        <result property="userId" column="user_id" />
+        <result property="number" column="number" />
+        <result property="createtime" column="createtime" />
+        <result property="note" column="note" />
+        <!-- association ：配置一对一属性 -->
+        <!-- property:order里面的User属性名 -->
+        <!-- javaType:属性类型 -->
+        <association property="user" javaType="com.qy.demo.demo.one.entity.User">
+            <!-- id:声明主键，表示user_id是关联查询对象的唯一标识-->
+            <id property="id" column="user_id" />
+            <result property="username" column="username" />
+            <result property="address" column="address" />
+        </association>
+
+    </resultMap>
+
+    <!-- 一对一关联，查询订单，订单内部包含用户属性 -->
+        <select id="queryOrderUserResultMap" resultMap="orderUserResultMap">
+        SELECT
+        o.id,
+        o.user_id,
+        o.number,
+        o.createtime,
+        o.note,
+        u.username,
+        u.address
+        FROM
+        `order` o
+        LEFT JOIN `user` u ON o.user_id = u.id
+    </select>
+
+
+
+    <resultMap type="com.qy.demo.demo.one.entity.User" id="userOrderResultMap2">
+        <id property="id" column="id" />
+        <result property="username" column="username" />
+        <result property="birthday" column="birthday" />
+        <result property="sex" column="sex" />
+        <result property="address" column="address" />
+
+        <!-- 配置一对多的关系
+            property：填写pojo类中集合类类属性的名称
+            javaType：填写集合类型的名称
+        -->
+        <collection property="orders" javaType="list" ofType="com.qy.demo.demo.one.entity.Order">
+            <!-- 配置主键，是关联Order的唯一标识 -->
+            <id property="id" column="oid" />
+            <result property="number" column="number" />
+            <result property="createtime" column="createtime" />
+            <result property="note" column="note" />
+        </collection>
+    </resultMap>
+
+    <!-- 一对多关联，查询订单同时查询该用户下的订单 -->
+        <select id="queryUserOrder" resultMap="userOrderResultMap2">
+        SELECT
+        u.id,
+        u.username,
+        u.birthday,
+        u.sex,
+        u.address,
+        o.id oid,
+        o.number,
+        o.createtime,
+        o.note
+        FROM
+        `user` u
+        LEFT JOIN `order` o ON u.id = o.user_id
+        </select>
+
+
+
+
+<!--
+
+
+    <resultMap type="com.qy.demo.demo.one.entity.User" id="userOrderResultMap3">
+        <id property="id" column="id" />
+        <result property="username" column="username" />
+        <result property="birthday" column="birthday" />
+        <result property="sex" column="sex" />
+        <result property="address" column="address" />
+
+        &lt;!&ndash; 配置一对多的关系
+            property：填写pojo类中集合类类属性的名称
+            javaType：填写集合类型的名称
+            been定义的orders  用作单个多集合
+        &ndash;&gt;
+        <collection property="orders" javaType="list" ofType="com.qy.demo.demo.one.entity.Order">
+            &lt;!&ndash; 配置主键，是关联Order的唯一标识 &ndash;&gt;
+            <id property="id" column="oid" />
+            <result property="number" column="number" />
+            <result property="createtime" column="createtime" />
+            <result property="note" column="note" />
+        </collection>
+    </resultMap>
+
+    &lt;!&ndash; 一对多关联，查询订单同时查询该用户下的订单 &ndash;&gt;
+    <select id="queryUserOrder3" resultMap="userOrderResultMap3">
+        SELECT
+        u.id,
+        u.username,
+        u.birthday,
+        u.sex,
+        u.address,
+        o.id oid,
+        o.number,
+        o.createtime,
+        o.note
+        FROM
+        `user` u
+        LEFT JOIN `order` o ON u.id = o.user_id  limit 1
+        </select>
+-->
 
 
 </mapper>

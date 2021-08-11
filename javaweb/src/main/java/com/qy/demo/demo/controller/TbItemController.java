@@ -10,10 +10,13 @@ import com.qy.demo.demo.exception.ResultEnum;
 import com.qy.demo.demo.mapper.TbItemMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -28,6 +31,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/test/item")
+@Validated
 public class TbItemController {
 
 
@@ -109,6 +113,9 @@ public class TbItemController {
   //  @GetMapping(value = "/findTest3",produces = "application/json")
     @RequestMapping( value="/findTest3",method =RequestMethod.GET,produces="application/json")
     public ResponseResult vali(@RequestBody Bserrr bserrr){
+
+
+
         System.out.println(bserrr.getName());
         return new ResponseResult(ResultEnum.SUCCESS);
     }
@@ -124,6 +131,14 @@ public class TbItemController {
         
     }
 
+
+    @GetMapping("/getUser")
+    public String getUserStr(@NotNull(message = "name 不能为空") String name, @Max(value = 99, message = "不能大于99岁") Integer age) {
+
+
+
+        return "name: " + name + " ,age:" + age;
+    }
 
 
 }

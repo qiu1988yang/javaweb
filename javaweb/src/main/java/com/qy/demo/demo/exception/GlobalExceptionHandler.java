@@ -11,6 +11,9 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -55,6 +58,14 @@ public class GlobalExceptionHandler {
     public Result MethodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e) {
         ObjectError objectError = e.getBindingResult().getAllErrors().get(0);
         return ResultUtil.error(200, objectError.getDefaultMessage());
+    }
+
+    //处理请求参数格式错误 @RequestParam上validate失败后抛出的异常是javax.validation.ConstraintViolationException
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseBody
+    public Result ConstraintViolationExceptionHandler(ConstraintViolationException e) {
+        String message = e.getConstraintViolations().stream().map(ConstraintViolation::getMessage).collect(Collectors.joining());
+        return ResultUtil.error(200,message);
     }
 }
 

@@ -35,23 +35,15 @@ public class UserController {
                 return map;
             }
         }
-
         map.put("code", "0000");
         map.put("message", "认证失败");
         return map;
-
     }
 
     @PostMapping(value="/getList")
     public List<SysUser> getList(){
-
         List userList = userService.getList();
-
-
-
-
         return userList;
-
     }
 
 

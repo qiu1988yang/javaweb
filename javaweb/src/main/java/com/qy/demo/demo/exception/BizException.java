@@ -1,5 +1,6 @@
 package com.qy.demo.demo.exception;
 
+//通用抛出异常类
 public class BizException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 

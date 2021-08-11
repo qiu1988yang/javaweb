@@ -1,7 +1,11 @@
 package com.qy.demo.demo.one.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.qy.demo.demo.one.entity.Student;
+import com.qy.demo.demo.one.entity.TbItemOne;
 import com.qy.demo.demo.one.mapper.StudentClassMapper;
 import com.qy.demo.demo.one.mapper.StudentMapper;
 import com.qy.demo.demo.one.service.ITbItemOneService;
@@ -32,17 +36,16 @@ public class OneController {
 
     @Resource
     private StudentMapper studentMapper;
+
     @Resource
     private StudentClassMapper studentClassMapper;
 
-
-
     @GetMapping(value = "/add")
     public Result add() {
-      //  studentMapper.selectPersonById(1)  一对一案例
-
-
-        return ResultUtil.success(studentMapper.selectPersonById3(1)  );
+        QueryWrapper<Student> sectionQueryWrapper = new QueryWrapper<>();
+        sectionQueryWrapper.eq("id", 3);
+        //studentMapper.findStudentById12(1)
+        return ResultUtil.success(studentMapper.findStudentById12(1));
     }
 }
 

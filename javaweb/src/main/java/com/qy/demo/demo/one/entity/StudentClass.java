@@ -18,4 +18,13 @@ public class StudentClass {
     private Integer classId;
     @TableField(value = "ClassName")
     private String className;
+
+
+   /* @TableField(exist = false)
+    @OneToOne //一对一默认为立即加载，即@Lazy(false)或此时不标注
+    @JoinColumn(name = "lao_gong_id", referencedColumnName = "man_id")
+    private Man laoGong;
+    */
+
+
 }

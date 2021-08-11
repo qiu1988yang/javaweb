@@ -320,6 +320,23 @@ public class TbItemOneController {
          //return new ResponseEntity<>("Your age is " + itemOne22,HttpStatus.OK);
         return ResponseEntity.ok().build();
     }
+
+
+
+
+    @GetMapping(value = "/mapper44")
+    public ResponseEntity<String> itemOneMapper22233() {
+        List<Integer> idList = new ArrayList<Integer>();
+        idList.add(1);
+        idList.add(2);
+        idList.add(3);
+        List<TbItemOne>employeeList=itemOneMapper.selectBatchIds(idList);
+        System.out.println("*******************"+employeeList);
+        return ResponseEntity.ok().build();
+    }
+
+
+
 }
 
 
